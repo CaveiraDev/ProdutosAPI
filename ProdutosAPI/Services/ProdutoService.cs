@@ -1,33 +1,42 @@
 ﻿using ProdutosAPI.Domain.Entities;
+using ProdutosAPI.Repository;
 using ProdutosAPI.Services.Interfaces;
+using ProdutosAPI.Validations;
 
 namespace ProdutosAPI.Services
 {
     public class ProdutoService : IProdutoService
     {
+        private readonly ProdutoRepository _repository;
+        private readonly ValidadorProduto _validador;
+
+        public ProdutoService() 
+        {
+            _repository = new ProdutoRepository();
+            _validador = new ValidadorProduto();
+
+        }
+
         public void Crie(Produto produto)
         {
-            throw new NotImplementedException();
+            _repository.Crie(produto);
         }
 
-        public Produto Obtenha(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Produto? Obtenha(int id) => _repository.Obtenha(id);
 
-        public IEnumerable<Produto> ObtenhaTodos()
-        {
-            throw new NotImplementedException();
-        }
+        public List<Produto> ObtenhaTodos() => _repository.ObtenhaTodos();
 
-        public void Atualize(Produto produto)
+        public Produto Atualize(Produto produto)
         {
-            throw new NotImplementedException();
+            Produto produtoExistente = Obtenha(produto.Id) ?? 
+                throw new KeyNotFoundException($"Produto com ID {produto.Id} não encontrado.");
+
+            return _repository.Atualize(produto);
         }
 
         public void Remova(int id)
         {
-            throw new NotImplementedException();
+            _repository.Remova(id);
         }
     }
 }

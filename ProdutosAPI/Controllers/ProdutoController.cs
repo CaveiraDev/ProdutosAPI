@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProdutosAPI.Domain.Entities;
 using ProdutosAPI.Domain.Exceptions;
+using ProdutosAPI.DTOs;
 using ProdutosAPI.Services;
 using ProdutosAPI.Validations;
 
@@ -10,15 +11,6 @@ namespace ProdutosAPI.Controllers
     [Route("[controller]")]
     public class ProdutosController : ControllerBase
     {
-        private static List<Produto> _produtos =
-        [
-            new (1,"Notebook Dell", "Informática", 3500.00m, 10),
-            new (2, "Smartphone Samsung", "Eletrônicos", 2500.00m, 5),
-            new (3, "Cafeteira", "Eletrodomésticos", 199.99m, 20),
-            new (4, "Fone de Ouvido", "Acessórios", 149.90m, 0),
-            new (5, "Monitor LG", "Informática", 899.00m, 7)
-        ];
-
         private readonly ValidadorProduto _validador;
         private readonly ProdutoService _servicos;
 
@@ -31,15 +23,17 @@ namespace ProdutosAPI.Controllers
         [HttpGet(Name = "ObtenhaTodos")]
         public ActionResult<IEnumerable<Produto>> Get()
         {
-            return Ok(_produtos);
+            IEnumerable <Produto> produtos = _servicos.ObtenhaTodos();
+            return Ok(produtos);
         }
 
         [HttpGet("{id}", Name = "Obtenha")]
         public ActionResult<Produto> GetById(int id)
         {
-            Produto produto = _produtos.FirstOrDefault(p => p.Id == id);
 
-            if (produto == null)
+            Produto? produto = _servicos.Obtenha(id);
+
+            if (produto is null)
             {
                 return NotFound(new { mensagem = $"Produto com ID {id} não encontrado." });
             }
@@ -63,53 +57,53 @@ namespace ProdutosAPI.Controllers
 
             Produto novoProduto = produto;
 
-            _produtos.Add(novoProduto);
+            _servicos.Crie(novoProduto);
 
             return CreatedAtRoute("ObtenhaProdutoPorId", new { id = novoProduto.Id }, novoProduto);
         }
 
         [HttpPut("{id}", Name = "Atualize")]
-        public ActionResult<Produto> Put(int id, [FromBody] Produto produto)
+        public ActionResult<Produto> Put(int id, [FromBody] ProdutoDto produtoDto)
         {
-            Produto produtoExistente = _produtos.FirstOrDefault(p => p.Id == id);
-
-            if (produtoExistente == null)
-            {
-                return NotFound(new { mensagem = $"Produto com ID {id} não encontrado." });
-            }
-
+            Produto produtoE = Converta(produtoDto);
+            produtoE.Id = id;
             try
             {
                 _validador.AssineRegrasAtualizacao();
-                _validador.Valide(produto);
+                _validador.Valide(produtoE);
             }
             catch (ValidacaoException ex)
             {
                 return BadRequest(new { mensagem = ex.Message });
             }
 
-            produtoExistente.Nome = produto.Nome;
-            produtoExistente.Categoria = produto.Categoria;
-            produtoExistente.Preco = produto.Preco;
-            produtoExistente.Quantidade = produto.Quantidade;
 
-            return Ok(produtoExistente);
+            Produto produto = _servicos.Atualize(produtoE);
+            return Ok(produto);
         }
 
         [HttpDelete("{id}", Name = "Remova")]
         public ActionResult Delete(int id)
         {
-            Produto produto = _produtos.FirstOrDefault(p => p.Id == id);
+            Produto produto = _servicos.ObtenhaTodos().FirstOrDefault(p => p.Id == id);
 
             if (produto is null)
             {
                 return NotFound(new { mensagem = $"Produto com ID {id} não encontrado." });
             }
 
-            _produtos.Remove(produto);
+            _servicos.Remova(id);
 
             return NoContent();
         }
 
+        public Produto Converta(ProdutoDto dto) => new()
+        {
+            Id = dto.Id,
+            Nome = dto.Nome,
+            Categoria = dto.Categoria,
+            Preco = dto.Preco,
+            Quantidade = dto.Quantidade
+        };
     }
 }
