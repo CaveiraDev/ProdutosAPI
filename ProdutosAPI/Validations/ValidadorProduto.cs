@@ -10,29 +10,30 @@ namespace ProdutosAPI.Validations
         {
             RuleFor(p => p.Nome)
                 .NotEmpty()
-                .WithMessage("Nome não pode ser nulo ou vazio.")
+                .WithMessage(CAMPO_NULO_OU_VAZIO)
                 .NotNull()
-                .WithMessage("Nome é obrigatório.")
+                .WithMessage(CAMPO_OBRIGATORIO_NAO_INFORMADO)
                 .MaximumLength(200)
                 .WithMessage("Nome não pode ter mais de 200 caracteres.");
 
             RuleFor(p => p.Categoria)
                 .NotEmpty()
-                .WithMessage("Categoria não pode ser nula ou vazia.")
+                .WithMessage(CAMPO_NULO_OU_VAZIO)
                 .NotNull()
-                .WithMessage("Categoria é obrigatória.")
+                .WithMessage(CAMPO_OBRIGATORIO_NAO_INFORMADO)
                 .MaximumLength(100)
                 .WithMessage("Categoria não pode ter mais de 100 caracteres.");
 
             RuleFor(p => p.Preco)
                 .GreaterThan(0)
-                .WithMessage("Preço deve ser maior que 0.")
+                .WithMessage(CAMPO_DEVE_SER_MAIOR_QUE_ZERO)
                 .LessThanOrEqualTo(999999.99m)
+                .OverridePropertyName("Preço")
                 .WithMessage("Preço não pode ser maior que 999999.99.");
 
             RuleFor(p => p.Quantidade)
                 .GreaterThanOrEqualTo(0)
-                .WithMessage("Quantidade deve ser maior ou igual a 0.")
+                .WithMessage(CAMPO_DEVE_SER_MAIOR_QUE_ZERO)
                 .LessThanOrEqualTo(100000)
                 .WithMessage("Quantidade não pode ser maior que 100000.");
         }
@@ -44,7 +45,9 @@ namespace ProdutosAPI.Validations
 
         public override void AssineRegrasExclusao()
         {
-            throw new NotImplementedException();
+            RuleFor(p => p.Id)
+            .GreaterThan(0)
+            .WithMessage(CAMPO_DEVE_SER_MAIOR_QUE_ZERO);
         }
 
     }
