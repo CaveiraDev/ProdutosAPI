@@ -39,7 +39,7 @@ namespace ProdutosAPI.Validations
 
         public override void AssineRegrasAtualizacao()
         {
-            throw new NotImplementedException();
+            AssineRegrasInclusao();
         }
 
         public override void AssineRegrasExclusao()

@@ -24,7 +24,7 @@ namespace ProdutosAPI.Controllers
             _validador = new ValidadorProduto();
         }
 
-        [HttpGet(Name = "ObtenhaProdutos")]
+        [HttpGet(Name = "Obtenha")]
         public ActionResult<IEnumerable<ProdutoModel>> Get()
         {
             return Ok(_produtos);
@@ -43,7 +43,7 @@ namespace ProdutosAPI.Controllers
             return Ok(produto);
         }
 
-        [HttpPost(Name = "CrieProduto")]
+        [HttpPost(Name = "Crie")]
         public ActionResult<ProdutoModel> Post([FromBody] ProdutoModel produto)
         {
 
@@ -64,7 +64,7 @@ namespace ProdutosAPI.Controllers
             return CreatedAtRoute("ObtenhaProdutoPorId", new { id = novoProduto.Id }, novoProduto);
         }
 
-        [HttpPut("{id}", Name = "AtualizeProduto")]
+        [HttpPut("{id}", Name = "Atualize")]
         public ActionResult<ProdutoModel> Put(int id, [FromBody] ProdutoModel produto)
         {
             ProdutoModel produtoExistente = _produtos.FirstOrDefault(p => p.Id == id);
@@ -84,8 +84,6 @@ namespace ProdutosAPI.Controllers
                 return BadRequest(new { mensagem = ex.Message });
             }
 
-
-
             produtoExistente.Nome = produto.Nome;
             produtoExistente.Categoria = produto.Categoria;
             produtoExistente.Preco = produto.Preco;
@@ -94,7 +92,7 @@ namespace ProdutosAPI.Controllers
             return Ok(produtoExistente);
         }
 
-        [HttpDelete("{id}", Name = "RemovaProduto")]
+        [HttpDelete("{id}", Name = "Remova")]
         public ActionResult Delete(int id)
         {
             ProdutoModel produto = _produtos.FirstOrDefault(p => p.Id == id);
