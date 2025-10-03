@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProdutosAPI.Models;
 using ProdutosAPI.Validations;
+using System.Reflection;
 
 namespace ProdutosAPI.Controllers
 {
@@ -18,10 +19,10 @@ namespace ProdutosAPI.Controllers
             new (5, "Monitor LG", "Informática", 899.00m, 7)
         ];
 
-        private readonly ProdutoValidator _validator;
+        private readonly ValidadorProduto _validator;
         public ProdutosController()
         {
-            _validator = new ProdutoValidator();
+            _validator = new ValidadorProduto();
         }
 
         [HttpGet(Name = "ObtenhaProdutos")]
@@ -46,13 +47,8 @@ namespace ProdutosAPI.Controllers
         [HttpPost(Name = "CrieProduto")]
         public ActionResult<ProdutoModel> Post([FromBody] ProdutoModel produto)
         {
-            ValidationResult validationResult = _validator.Validate(produto);
-
-            if (!validationResult.IsValid)
-            {
-                var erros = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-                return BadRequest(new { mensagem = "Erros de validação", erros });
-            }
+           _validator.AssineRegrasInclusao();
+            _validator.Valide(produto);
 
             ProdutoModel novoProduto = produto;
 
@@ -71,13 +67,8 @@ namespace ProdutosAPI.Controllers
                 return NotFound(new { mensagem = $"Produto com ID {id} não encontrado." });
             }
 
-            ValidationResult validationResult = _validator.Validate(produto);
-
-            if (!validationResult.IsValid)
-            {
-                var erros = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-                return BadRequest(new { mensagem = "Erros de validação", erros });
-            }
+            _validator.AssineRegrasAtualizacao();
+            _validator.Valide(produto);
 
             produtoExistente.Nome = produto.Nome;
             produtoExistente.Categoria = produto.Categoria;

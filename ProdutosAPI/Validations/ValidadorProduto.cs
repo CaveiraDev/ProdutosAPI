@@ -3,9 +3,10 @@ using ProdutosAPI.Models;
 
 namespace ProdutosAPI.Validations
 {
-    public class ProdutoValidator : AbstractValidator<ProdutoModel>
+    public class ValidadorProduto : ValidadorAbstratoCadastro<ProdutoModel>
     {
-        public ProdutoValidator()
+
+        public override void AssineRegrasInclusao()
         {
             RuleFor(p => p.Nome)
                 .NotEmpty()
@@ -35,5 +36,16 @@ namespace ProdutosAPI.Validations
                 .LessThanOrEqualTo(100000)
                 .WithMessage("Quantidade não pode ser maior que 100000.");
         }
+
+        public override void AssineRegrasAtualizacao()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void AssineRegrasExclusao()
+        {
+            throw new NotImplementedException();
+        }
+
     }
- }
+}
