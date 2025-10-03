@@ -49,14 +49,21 @@ namespace ProdutosAPI.Controllers
                 return BadRequest(new { mensagem = ex.Message });
             }
 
-            return CreatedAtRoute("ObtenhaProdutoPorId", new { id = produto.Id }, produto);
+            return CreatedAtRoute("Obtenha", new { id = produto.Id }, produto);
         }
 
         [HttpPut("{id}", Name = "Atualize")]
         public ActionResult<Produto> Put(int id, [FromBody] ProdutoDto produtoDto)
         {
-            Produto produto = Converta(produtoDto);
-            produto.Id = id;
+            Produto produto = new()
+            {
+                Id = id,
+                Nome = produtoDto.Nome,
+                Categoria = produtoDto.Categoria,
+                Quantidade = produtoDto.Quantidade,
+                Preco = produtoDto.Preco
+            };
+
             try
             {
                 produto = _servicos.Atualize(produto);
@@ -84,13 +91,5 @@ namespace ProdutosAPI.Controllers
             return NoContent();
         }
 
-        public Produto Converta(ProdutoDto dto) => new()
-        {
-            Id = dto.Id,
-            Nome = dto.Nome,
-            Categoria = dto.Categoria,
-            Preco = dto.Preco,
-            Quantidade = dto.Quantidade
-        };
     }
 }

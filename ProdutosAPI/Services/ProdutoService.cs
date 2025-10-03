@@ -1,4 +1,5 @@
 ﻿using ProdutosAPI.Domain.Entities;
+using ProdutosAPI.Domain.Exceptions;
 using ProdutosAPI.Repository;
 using ProdutosAPI.Services.Interfaces;
 using ProdutosAPI.Validations;
