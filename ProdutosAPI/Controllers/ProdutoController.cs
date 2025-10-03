@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProdutosAPI.Domain.Entities;
 using ProdutosAPI.Domain.Exceptions;
+using ProdutosAPI.Services;
 using ProdutosAPI.Validations;
 
 namespace ProdutosAPI.Controllers
@@ -19,18 +20,21 @@ namespace ProdutosAPI.Controllers
         ];
 
         private readonly ValidadorProduto _validador;
+        private readonly ProdutoService _servicos;
+
         public ProdutosController()
         {
             _validador = new ValidadorProduto();
+            _servicos = new ProdutoService();
         }
 
-        [HttpGet(Name = "Obtenha")]
+        [HttpGet(Name = "ObtenhaTodos")]
         public ActionResult<IEnumerable<Produto>> Get()
         {
             return Ok(_produtos);
         }
 
-        [HttpGet("{id}", Name = "ObtenhaProdutoPorId")]
+        [HttpGet("{id}", Name = "Obtenha")]
         public ActionResult<Produto> GetById(int id)
         {
             Produto produto = _produtos.FirstOrDefault(p => p.Id == id);

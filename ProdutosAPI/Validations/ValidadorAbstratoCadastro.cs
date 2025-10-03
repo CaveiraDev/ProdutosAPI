@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-using ProdutosAPI.Validations.Interfaces;
-using System.ComponentModel.DataAnnotations;
+﻿using ProdutosAPI.Validations.Interfaces;
 
 namespace ProdutosAPI.Validations
 {
