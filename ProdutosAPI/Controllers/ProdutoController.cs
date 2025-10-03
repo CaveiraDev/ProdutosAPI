@@ -17,14 +17,14 @@ namespace ProdutosAPI.Controllers
             _servicos = new ProdutoService();
         }
 
-        [HttpGet(Name = "ObtenhaTodos")]
+        [HttpGet("ObtenhaTodos",Name = "ObtenhaTodos")]
         public ActionResult<IEnumerable<Produto>> Get()
         {
             IEnumerable <Produto> produtos = _servicos.ObtenhaTodos();
             return Ok(produtos);
         }
 
-        [HttpGet("{id}", Name = "Obtenha")]
+        [HttpGet("ObtenhaPorID/{id}", Name = "ObtenhaPorID")]
         public ActionResult<Produto> GetById(int id)
         {
             Produto? produto = _servicos.Obtenha(id);
@@ -37,7 +37,7 @@ namespace ProdutosAPI.Controllers
             return Ok(produto);
         }
 
-        [HttpPost(Name = "Crie")]
+        [HttpPost("Crie",Name = "Crie")]
         public ActionResult<Produto> Post([FromBody] Produto produto)
         {
             try
@@ -52,7 +52,7 @@ namespace ProdutosAPI.Controllers
             return CreatedAtRoute("Obtenha", new { id = produto.Id }, produto);
         }
 
-        [HttpPut("{id}", Name = "Atualize")]
+        [HttpPut("Atualize/{id}", Name = "Atualize")]
         public ActionResult<Produto> Put(int id, [FromBody] ProdutoDto produtoDto)
         {
             Produto produto = new()
@@ -76,7 +76,7 @@ namespace ProdutosAPI.Controllers
             return Ok(produto);
         }
 
-        [HttpDelete("{id}", Name = "Remova")]
+        [HttpDelete("Remova/{id}", Name = "Remova")]
         public ActionResult Delete(int id)
         {
             Produto produto = _servicos.ObtenhaTodos().FirstOrDefault(p => p.Id == id);
