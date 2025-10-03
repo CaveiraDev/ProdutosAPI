@@ -19,6 +19,9 @@ namespace ProdutosAPI.Services
 
         public void Crie(Produto produto)
         {
+            _validador.AssineRegrasInclusao();
+            _validador.Valide(produto);
+
             _repository.Crie(produto);
         }
 
@@ -28,6 +31,9 @@ namespace ProdutosAPI.Services
 
         public Produto Atualize(Produto produto)
         {
+            _validador.AssineRegrasAtualizacao();
+            _validador.Valide(produto);
+
             Produto produtoExistente = Obtenha(produto.Id) ?? 
                 throw new KeyNotFoundException($"Produto com ID {produto.Id} não encontrado.");
 

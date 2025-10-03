@@ -3,7 +3,6 @@ using ProdutosAPI.Domain.Entities;
 using ProdutosAPI.Domain.Exceptions;
 using ProdutosAPI.DTOs;
 using ProdutosAPI.Services;
-using ProdutosAPI.Validations;
 
 namespace ProdutosAPI.Controllers
 {
@@ -11,12 +10,10 @@ namespace ProdutosAPI.Controllers
     [Route("[controller]")]
     public class ProdutosController : ControllerBase
     {
-        private readonly ValidadorProduto _validador;
         private readonly ProdutoService _servicos;
 
         public ProdutosController()
         {
-            _validador = new ValidadorProduto();
             _servicos = new ProdutoService();
         }
 
@@ -30,7 +27,6 @@ namespace ProdutosAPI.Controllers
         [HttpGet("{id}", Name = "Obtenha")]
         public ActionResult<Produto> GetById(int id)
         {
-
             Produto? produto = _servicos.Obtenha(id);
 
             if (produto is null)
@@ -44,41 +40,32 @@ namespace ProdutosAPI.Controllers
         [HttpPost(Name = "Crie")]
         public ActionResult<Produto> Post([FromBody] Produto produto)
         {
-
             try
             {
-                _validador.AssineRegrasInclusao();
-                _validador.Valide(produto);
+                _servicos.Crie(produto);
             }
             catch (ValidacaoException ex)
             {
                 return BadRequest(new { mensagem = ex.Message });
             }
 
-            Produto novoProduto = produto;
-
-            _servicos.Crie(novoProduto);
-
-            return CreatedAtRoute("ObtenhaProdutoPorId", new { id = novoProduto.Id }, novoProduto);
+            return CreatedAtRoute("ObtenhaProdutoPorId", new { id = produto.Id }, produto);
         }
 
         [HttpPut("{id}", Name = "Atualize")]
         public ActionResult<Produto> Put(int id, [FromBody] ProdutoDto produtoDto)
         {
-            Produto produtoE = Converta(produtoDto);
-            produtoE.Id = id;
+            Produto produto = Converta(produtoDto);
+            produto.Id = id;
             try
             {
-                _validador.AssineRegrasAtualizacao();
-                _validador.Valide(produtoE);
+                produto = _servicos.Atualize(produto);
             }
             catch (ValidacaoException ex)
             {
                 return BadRequest(new { mensagem = ex.Message });
             }
 
-
-            Produto produto = _servicos.Atualize(produtoE);
             return Ok(produto);
         }
 
