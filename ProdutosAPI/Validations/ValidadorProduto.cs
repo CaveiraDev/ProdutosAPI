@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using ProdutosAPI.Models;
+using ProdutosAPI.Domain.Entities;
 
 namespace ProdutosAPI.Validations
 {
-    public class ValidadorProduto : ValidadorAbstratoCadastro<ProdutoModel>
+    public class ValidadorProduto : ValidadorAbstratoCadastro<Produto>
     {
 
         public override void AssineRegrasInclusao()

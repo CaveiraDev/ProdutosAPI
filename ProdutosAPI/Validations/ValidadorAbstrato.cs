@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using ProdutosAPI.Exceptions;
+using ProdutosAPI.Domain.Exceptions;
+using ProdutosAPI.Validations.Interfaces;
 
 namespace ProdutosAPI.Validations
 {

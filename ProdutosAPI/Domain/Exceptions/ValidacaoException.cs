@@ -1,8 +1,8 @@
 ﻿using FluentValidation.Results;
 
-namespace ProdutosAPI.Exceptions
+namespace ProdutosAPI.Domain.Exceptions
 {
-    public class ValidacaoException(FluentValidation.Results.ValidationResult validationResult) : ApplicationException
+    public class ValidacaoException(ValidationResult validationResult) : ApplicationException
     {
         public IList<ValidationFailure> Errors { get; } = validationResult.Errors;
 

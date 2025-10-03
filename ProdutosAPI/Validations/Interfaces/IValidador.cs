@@ -1,4 +1,4 @@
-﻿namespace ProdutosAPI.Validations
+﻿namespace ProdutosAPI.Validations.Interfaces
 {
     public interface IValidador<T>
     where T : class

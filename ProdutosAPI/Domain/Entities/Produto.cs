@@ -1,6 +1,6 @@
-﻿namespace ProdutosAPI.Models
+﻿namespace ProdutosAPI.Domain.Entities
 {
-    public class ProdutoModel(int id, string nome, string categoria, decimal preco, int quantidade)
+    public class Produto(int id, string nome, string categoria, decimal preco, int quantidade)
     {
         public int Id { get; set; } = id;
         public string Nome { get; set; } = nome;

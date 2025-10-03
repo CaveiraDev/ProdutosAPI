@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProdutosAPI.Exceptions;
-using ProdutosAPI.Models;
+using ProdutosAPI.Domain.Entities;
+using ProdutosAPI.Domain.Exceptions;
 using ProdutosAPI.Validations;
 
 namespace ProdutosAPI.Controllers
@@ -9,7 +9,7 @@ namespace ProdutosAPI.Controllers
     [Route("[controller]")]
     public class ProdutosController : ControllerBase
     {
-        private static List<ProdutoModel> _produtos =
+        private static List<Produto> _produtos =
         [
             new (1,"Notebook Dell", "Informática", 3500.00m, 10),
             new (2, "Smartphone Samsung", "Eletrônicos", 2500.00m, 5),
@@ -25,15 +25,15 @@ namespace ProdutosAPI.Controllers
         }
 
         [HttpGet(Name = "Obtenha")]
-        public ActionResult<IEnumerable<ProdutoModel>> Get()
+        public ActionResult<IEnumerable<Produto>> Get()
         {
             return Ok(_produtos);
         }
 
         [HttpGet("{id}", Name = "ObtenhaProdutoPorId")]
-        public ActionResult<ProdutoModel> GetById(int id)
+        public ActionResult<Produto> GetById(int id)
         {
-            ProdutoModel produto = _produtos.FirstOrDefault(p => p.Id == id);
+            Produto produto = _produtos.FirstOrDefault(p => p.Id == id);
 
             if (produto == null)
             {
@@ -44,7 +44,7 @@ namespace ProdutosAPI.Controllers
         }
 
         [HttpPost(Name = "Crie")]
-        public ActionResult<ProdutoModel> Post([FromBody] ProdutoModel produto)
+        public ActionResult<Produto> Post([FromBody] Produto produto)
         {
 
             try
@@ -57,7 +57,7 @@ namespace ProdutosAPI.Controllers
                 return BadRequest(new { mensagem = ex.Message });
             }
 
-            ProdutoModel novoProduto = produto;
+            Produto novoProduto = produto;
 
             _produtos.Add(novoProduto);
 
@@ -65,9 +65,9 @@ namespace ProdutosAPI.Controllers
         }
 
         [HttpPut("{id}", Name = "Atualize")]
-        public ActionResult<ProdutoModel> Put(int id, [FromBody] ProdutoModel produto)
+        public ActionResult<Produto> Put(int id, [FromBody] Produto produto)
         {
-            ProdutoModel produtoExistente = _produtos.FirstOrDefault(p => p.Id == id);
+            Produto produtoExistente = _produtos.FirstOrDefault(p => p.Id == id);
 
             if (produtoExistente == null)
             {
@@ -95,7 +95,7 @@ namespace ProdutosAPI.Controllers
         [HttpDelete("{id}", Name = "Remova")]
         public ActionResult Delete(int id)
         {
-            ProdutoModel produto = _produtos.FirstOrDefault(p => p.Id == id);
+            Produto produto = _produtos.FirstOrDefault(p => p.Id == id);
 
             if (produto is null)
             {
