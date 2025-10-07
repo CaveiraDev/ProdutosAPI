@@ -14,8 +14,19 @@ namespace ProdutosAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // Adicione antes de builder.Build()
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
+            });
 
             var app = builder.Build();
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -28,6 +39,8 @@ namespace ProdutosAPI
 
             app.UseAuthorization();
 
+            // Adicione antes de app.MapControllers()
+            app.UseCors("AllowFrontend");
 
             app.MapControllers();
 

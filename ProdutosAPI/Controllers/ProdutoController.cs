@@ -52,7 +52,7 @@ namespace ProdutosAPI.Controllers
             return CreatedAtRoute("Obtenha", new { id = produto.Id }, produto);
         }
 
-        [HttpPut("Atualize/{id}", Name = "Atualize")]
+        [HttpPut("Atualize/{id}")]
         public ActionResult<Produto> Put(int id, [FromBody] ProdutoDto produtoDto)
         {
             Produto produto = new()
@@ -76,7 +76,7 @@ namespace ProdutosAPI.Controllers
             return Ok(produto);
         }
 
-        [HttpDelete("Remova/{id}", Name = "Remova")]
+        [HttpDelete("Remova/{id}")]
         public ActionResult Delete(int id)
         {
             Produto produto = _servicos.ObtenhaTodos().FirstOrDefault(p => p.Id == id);

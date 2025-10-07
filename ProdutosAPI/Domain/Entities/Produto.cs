@@ -7,7 +7,7 @@
         public string Categoria { get; set; } = categoria;
         public decimal Preco { get; set; } = preco;
         public int Quantidade { get; set; } = quantidade;
-        public DateTime DataInclusao { get; } = DateTime.Now;
+        public DateTime Data { get; } = DateTime.Now;
 
         public bool Disponivel => Quantidade > 0;
 
