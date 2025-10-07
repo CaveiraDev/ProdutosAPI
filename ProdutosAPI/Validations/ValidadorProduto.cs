@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using ProdutosAPI.Domain.Entities;
+using ProdutosAPI.Repository;
 
 namespace ProdutosAPI.Validations
 {
@@ -36,11 +37,31 @@ namespace ProdutosAPI.Validations
                 .WithMessage(CAMPO_DEVE_SER_MAIOR_QUE_ZERO)
                 .LessThanOrEqualTo(100000)
                 .WithMessage("Quantidade não pode ser maior que 100000.");
+
+            RuleFor(p => p)
+               .Custom((m, context) =>
+               {
+                   bool possuiRegistro = new ProdutoRepository().Obtenha(m.Id) != null;
+                   if (possuiRegistro)
+                   {
+                       context.AddFailure($"Produto com ID {m.Id} já cadastrado.");
+                   }
+               });
         }
 
         public override void AssineRegrasAtualizacao()
         {
             AssineRegrasInclusao();
+
+            RuleFor(p => p)
+               .Custom((m, context) =>
+               {
+                   bool possuiRegistro = new ProdutoRepository().Obtenha(m.Id) != null;
+                   if (!possuiRegistro)
+                   {
+                       context.AddFailure($"Produto com ID {m.Id} não encontrado.");
+                   }
+               });
         }
 
         public override void AssineRegrasExclusao()
@@ -48,6 +69,16 @@ namespace ProdutosAPI.Validations
             RuleFor(p => p.Id)
             .GreaterThan(0)
             .WithMessage(CAMPO_DEVE_SER_MAIOR_QUE_ZERO);
+
+            RuleFor(p => p)
+                .Custom((m, context) =>
+                {
+                    bool possuiRegistro = new ProdutoRepository().Obtenha(m.Id) != null;
+                    if (!possuiRegistro)
+                    {
+                        context.AddFailure($"Produto com ID {m.Id} não encontrado.");
+                    }
+                });
         }
 
     }
