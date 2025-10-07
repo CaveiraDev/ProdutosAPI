@@ -79,7 +79,7 @@ namespace ProdutosAPI.Controllers
         [HttpDelete("Remova/{id}")]
         public ActionResult Delete(int id)
         {
-            Produto produto = _servicos.ObtenhaTodos().FirstOrDefault(p => p.Id == id);
+            Produto produto = _servicos.Obtenha(id)!;
 
             if (produto is null)
             {

@@ -14,7 +14,7 @@ namespace ProdutosAPI.Validations
                 .NotNull()
                 .WithMessage(CAMPO_OBRIGATORIO_NAO_INFORMADO)
                 .MaximumLength(200)
-                .WithMessage("Nome não pode ter mais de 200 caracteres.");
+                .WithMessage("Nome não pode ter mais de 100 caracteres.");
 
             RuleFor(p => p.Categoria)
                 .NotEmpty()
