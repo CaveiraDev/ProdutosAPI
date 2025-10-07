@@ -80,6 +80,5 @@ namespace ProdutosAPI.Validations
                     }
                 });
         }
-
     }
 }

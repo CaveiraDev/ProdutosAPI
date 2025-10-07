@@ -20,7 +20,7 @@ namespace ProdutosAPI.Controllers
         [HttpGet("ObtenhaTodos",Name = "ObtenhaTodos")]
         public ActionResult<IEnumerable<Produto>> Get()
         {
-            IEnumerable <Produto> produtos = _servicos.ObtenhaTodos();
+            IEnumerable<Produto> produtos = _servicos.ObtenhaTodos() ?? [];
             return Ok(produtos);
         }
 
@@ -29,15 +29,11 @@ namespace ProdutosAPI.Controllers
         {
             Produto? produto = _servicos.Obtenha(id);
 
-            if (produto is null)
-            {
-                return NotFound(new { mensagem = $"Produto com ID {id} não encontrado." });
-            }
-
-            return Ok(produto);
+            return produto != null ? Ok(produto) : 
+                NotFound(new { mensagem = $"Produto com ID {id} não encontrado." });
         }
 
-        [HttpPost("Crie",Name = "Crie")]
+        [HttpPost("Crie")]
         public ActionResult<Produto> Post([FromBody] Produto produto)
         {
             try
@@ -45,6 +41,10 @@ namespace ProdutosAPI.Controllers
                 _servicos.Crie(produto);
             }
             catch (ValidacaoException ex)
+            {
+                return BadRequest(new { mensagem = ex.Message });
+            }
+            catch (Exception ex)
             {
                 return BadRequest(new { mensagem = ex.Message });
             }
@@ -72,6 +72,10 @@ namespace ProdutosAPI.Controllers
             {
                 return BadRequest(new { mensagem = ex.Message });
             }
+            catch (Exception ex) 
+            {
+                return BadRequest(new { mensagem = ex.Message });
+            }
 
             return Ok(produto);
         }
@@ -79,7 +83,7 @@ namespace ProdutosAPI.Controllers
         [HttpDelete("Remova/{id}")]
         public ActionResult Delete(int id)
         {
-            Produto produto = _servicos.Obtenha(id)!;
+            Produto? produto = _servicos.Obtenha(id);
 
             if (produto is null)
             {

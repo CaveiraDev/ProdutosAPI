@@ -6,7 +6,7 @@ namespace ProdutosAPI.Repository
     public class ProdutoRepository : IRepository
     {
         private static List<Produto>? _cache;
-        private static int _proximoId = _cache?.Count ?? 0;
+        private static int _proximoId = _cache?.Count +1 ?? 1;
 
         private List<Produto> ObtenhaCache()
         {
@@ -30,14 +30,13 @@ namespace ProdutosAPI.Repository
 
         public void Crie(Produto produto)
         {
-            produto.Id = _proximoId++;
+            produto.Id = _proximoId;
             ObtenhaCache().Add(produto);
         }
 
         public Produto Atualize(Produto produto)
         {
-            var produtoExistente = Obtenha(produto.Id)
-                ?? throw new KeyNotFoundException($"Produto com ID {produto.Id} não encontrado");
+            Produto produtoExistente = Obtenha(produto.Id)!;
 
             produtoExistente.Nome = produto.Nome;
             produtoExistente.Categoria = produto.Categoria;
@@ -49,8 +48,7 @@ namespace ProdutosAPI.Repository
 
         public void Remova(int id)
         {
-            var produto = Obtenha(id)
-                ?? throw new KeyNotFoundException($"Produto com ID {id} não encontrado");
+            Produto produto = Obtenha(id)!;
 
             ObtenhaCache().Remove(produto);
         }
