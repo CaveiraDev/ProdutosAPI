@@ -14,7 +14,7 @@ namespace ProdutosAPI.Validations
                 .WithMessage(CAMPO_NULO_OU_VAZIO)
                 .NotNull()
                 .WithMessage(CAMPO_OBRIGATORIO_NAO_INFORMADO)
-                .MaximumLength(200)
+                .MaximumLength(100)
                 .WithMessage("Nome não pode ter mais de 100 caracteres.");
 
             RuleFor(p => p.Categoria)
@@ -35,8 +35,8 @@ namespace ProdutosAPI.Validations
             RuleFor(p => p.Quantidade)
                 .GreaterThanOrEqualTo(0)
                 .WithMessage(CAMPO_DEVE_SER_MAIOR_QUE_ZERO)
-                .LessThanOrEqualTo(100000)
-                .WithMessage("Quantidade não pode ser maior que 100000.");
+                .LessThanOrEqualTo(1000000)
+                .WithMessage("Quantidade não pode ser maior que 1000000.");
 
             RuleFor(p => p)
                .Custom((m, context) =>

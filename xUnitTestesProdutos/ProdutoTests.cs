@@ -27,7 +27,7 @@ namespace xUnitTestesProdutos
 
             // Act
             bool disponivel = produto.Disponivel;
-
+          
             // Assert
             Assert.True(disponivel);
         }
