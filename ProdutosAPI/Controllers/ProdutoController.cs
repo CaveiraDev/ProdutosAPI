@@ -49,7 +49,7 @@ namespace ProdutosAPI.Controllers
                 return BadRequest(new { mensagem = ex.Message });
             }
 
-            return CreatedAtRoute("Obtenha", new { id = produto.Id }, produto);
+            return StatusCode(201, produto);
         }
 
         [HttpPut("Atualize/{id}")]
