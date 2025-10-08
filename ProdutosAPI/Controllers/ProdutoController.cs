@@ -17,14 +17,14 @@ namespace ProdutosAPI.Controllers
             _servicos = new ProdutoService();
         }
 
-        [HttpGet("ObtenhaTodos",Name = "ObtenhaTodos")]
+        [HttpGet("ObtenhaTodos")]
         public ActionResult<IEnumerable<Produto>> Get()
         {
             IEnumerable<Produto> produtos = _servicos.ObtenhaTodos() ?? [];
             return Ok(produtos);
         }
 
-        [HttpGet("ObtenhaPorID/{id}", Name = "ObtenhaPorID")]
+        [HttpGet("ObtenhaPorID/{id}")]
         public ActionResult<Produto> GetById(int id)
         {
             Produto? produto = _servicos.Obtenha(id);
