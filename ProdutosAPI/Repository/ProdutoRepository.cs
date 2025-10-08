@@ -6,7 +6,7 @@ namespace ProdutosAPI.Repository
     public class ProdutoRepository : IRepository
     {
         private static List<Produto>? _cache;
-        private static int _proximoId = _cache?.Count +1 ?? 1;
+        private static int _proximoId => _cache?.Select(m => m.Id).Max() + 1 ?? 1;
 
         private List<Produto> ObtenhaCache()
         {
@@ -30,7 +30,11 @@ namespace ProdutosAPI.Repository
 
         public void Crie(Produto produto)
         {
-            produto.Id = _proximoId;
+            if(produto.Id == 0)
+            {
+                produto.Id = _proximoId;
+            }
+
             ObtenhaCache().Add(produto);
         }
 
