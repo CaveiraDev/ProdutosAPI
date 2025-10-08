@@ -17,7 +17,7 @@ namespace ProdutosAPI.Repository
                     new Produto(1, "Notebook Dell", "Informática", 3500.00m, 10),
                     new Produto(2, "Smartphone Samsung", "Eletrônicos", 2500.00m, 5),
                     new Produto(3, "Cafeteira", "Eletrodomésticos", 199.99m, 20),
-                    new Produto(4, "Fone de Ouvido", "Acessórios", 149.90m, 0),
+                    new Produto(4, "Fone de Ouvido", "Acessórios", 149.90m, 1),
                     new Produto(5, "Monitor LG", "Informática", 899.00m, 7)
                 ];
             }
